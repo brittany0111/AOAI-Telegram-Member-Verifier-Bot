@@ -14,11 +14,11 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     await context.bot.send_message(
         chat_id=user_chat_id,
         text=(
-            f"Hi {first_name}! 👋\n\n"
+            f"Hi {first_name}!\n\n"
             "Thanks for requesting to join.\n"
             "Before we approve your request, could you please reply with:\n\n"
-            "1️⃣ Your full name \n"
-            "2️⃣ Your email address \n"
+            "1. Your full name \n"
+            "2. Your email address \n"
             "This information will solely be used for verification purposes. Thank you!"
         )
     )
