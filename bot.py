@@ -1,19 +1,12 @@
-from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder,
-    ContextTypes,
-    ChatJoinRequestHandler,
-)
+from telegram import Update, Bot
+from telegram.ext import ApplicationBuilder, ContextTypes, ChatJoinRequestHandler
+
 
 BOT_TOKEN = "7980961451:AAGVXXZWlYs8I5Bht101KDazP2c7XZbxeHI"
 
 
-async def handle_join_request(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     join_request = update.chat_join_request
-
     user_chat_id = join_request.user_chat_id
     first_name = join_request.from_user.first_name or "there"
 
@@ -30,18 +23,15 @@ async def handle_join_request(
         )
     )
 
-    # OPTIONAL: auto-approve after sending message
-    # await join_request.approve()
-
-
-def main():
+async def handler(req):
+    """Vercel handler"""
+    data = await req.json()
+    update = Update.de_json(data, Bot(BOT_TOKEN))
+    
     app = ApplicationBuilder().token(BOT_TOKEN).build()
-
     app.add_handler(ChatJoinRequestHandler(handle_join_request))
 
-    print("Bot is running...")
-    app.run_polling()
+    # process the single update
+    await app.process_update(update)
 
-
-if __name__ == "__main__":
-    main()
+    return {"status": "ok"}
